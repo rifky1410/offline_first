@@ -10,6 +10,7 @@ class ArticleModel {
   late String title;
   late String description;
   late String urlToImage;
+  String url = '';
 
   ArticleModel();
 
@@ -18,6 +19,7 @@ class ArticleModel {
     model.title = json['title'] ?? 'Tanpa Judul';
     model.description = json['description'] ?? 'Tanpa Deskripsi';
     model.urlToImage = json['urlToImage'] ?? '';
+    model.url = json['url'] ?? '';
     return model;
   }
 
@@ -25,5 +27,6 @@ class ArticleModel {
         title: title,
         description: description,
         urlToImage: urlToImage,
+        url: url,
       );
 }

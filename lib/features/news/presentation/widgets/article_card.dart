@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../domain/entities/article_entity.dart';
 
 class ArticleCard extends StatelessWidget {
   final ArticleEntity article;
   const ArticleCard({super.key, required this.article});
 
+  Future<void> _openArticle() async {
+    if (article.url.isEmpty) return;
+    final uri = Uri.parse(article.url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GestureDetector(
+      onTap: _openArticle,
+      child: Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       decoration: BoxDecoration(
         color: const Color(0xFF1A1A2E),
@@ -61,6 +72,7 @@ class ArticleCard extends StatelessWidget {
           ],
         ),
       ),
+    ),
     );
   }
 
