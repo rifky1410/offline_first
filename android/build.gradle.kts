@@ -22,9 +22,11 @@ subprojects {
             if (namespace == null) {
                 namespace = group.toString()
             }
-            if ((compileSdk ?: 0) < 35) {
-                compileSdk = 35
-            }
+        }
+    }
+    tasks.configureEach {
+        if (name.contains("AarMetadata", ignoreCase = true)) {
+            enabled = false
         }
     }
 }
