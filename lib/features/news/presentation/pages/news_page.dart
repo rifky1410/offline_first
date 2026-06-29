@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../core/di/injection.dart';
+// PERBAIKAN: Mundur 4 langkah (../../../../) untuk mencapai folder core
+import '../../../../core/di/injection.dart';
 import '../bloc/news_bloc.dart';
 import '../bloc/news_state.dart';
 import '../widgets/article_card.dart';
