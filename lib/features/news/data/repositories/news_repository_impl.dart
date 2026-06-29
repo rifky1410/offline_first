@@ -1,28 +1,35 @@
-import '../models/article_model.dart';
+import '../datasources/news_remote_datasource.dart';
+import '../datasources/news_local_datasource.dart';
 import '../../domain/entities/article_entity.dart';
 import '../../domain/repositories/news_repository.dart';
 
 class NewsRepositoryImpl implements NewsRepository {
-  // Ganti tipe data dynamic ini dengan class RemoteDataSource kamu jika namanya berbeda
-  final dynamic remoteDataSource; 
+  final NewsRemoteDatasource remoteDataSource;
+  final NewsLocalDatasource localDataSource;
 
-  NewsRepositoryImpl({required this.remoteDataSource});
+  NewsRepositoryImpl({
+    required this.remoteDataSource,
+    required this.localDataSource,
+  });
 
   @override
   Future<List<ArticleEntity>> getArticles() async {
     try {
-      // 1. Ambil data mentah (berupa Model)
-      final List<ArticleModel> models = await remoteDataSource.getNewsFromApi();
+      final models = await remoteDataSource.getNewsFromApi();
 
-      // 2. Konversi / Mapping dari List<ArticleModel> menjadi List<ArticleEntity>
-      List<ArticleEntity> entities = List<ArticleEntity>.from(models);
+      // Cache ke Isar setelah berhasil fetch
+      await localDataSource.saveArticles(models);
 
-      // 3. Logika Anti-AI: Sort Descending (Z ke A) untuk NIM Ganjil
+      // Anti-AI: NIM 20123021 berakhiran 1 (Ganjil) -> Sort Z ke A (Descending)
+      final entities = models.map((m) => m.toEntity()).toList();
       entities.sort((a, b) => b.title.compareTo(a.title));
-
-      return entities; 
-    } catch (e) {
-      throw Exception('Gagal mengambil data berita: $e');
+      return entities;
+    } catch (_) {
+      // Offline fallback: ambil dari Isar
+      final cached = await localDataSource.getArticles();
+      if (cached.isEmpty) rethrow;
+      cached.sort((a, b) => b.title.compareTo(a.title));
+      return cached;
     }
   }
 }
