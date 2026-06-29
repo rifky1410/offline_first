@@ -96,7 +96,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.blueAccent.withOpacity(0.4),
+                    color: Colors.blueAccent.withValues(alpha: 0.4),
                     blurRadius: 20,
                     spreadRadius: 4,
                   ),
@@ -108,7 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Icon(
                   Icons.person,
                   size: 72,
-                  color: Colors.blueAccent.withOpacity(0.8),
+                  color: Colors.blueAccent.withValues(alpha: 0.8),
                 ),
               ),
             ),
@@ -134,7 +134,7 @@ class _ProfilePageState extends State<ProfilePage> {
               decoration: BoxDecoration(
                 color: const Color(0xFF1A1A2E),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.blueAccent.withOpacity(0.3)),
+                border: Border.all(color: Colors.blueAccent.withValues(alpha: 0.3)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

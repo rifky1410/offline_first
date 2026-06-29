@@ -37,7 +37,7 @@ class ArticleCard extends StatelessWidget {
                       width: 80,
                       height: 80,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => _placeholder(),
+                      errorBuilder: (_, __, _e) => _placeholder(),
                     )
                   : _placeholder(),
             ),
