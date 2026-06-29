@@ -1,19 +1,19 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../domain/repositories/news_repository.dart';
+import '../../domain/usecases/get_articles.dart';
 import 'news_state.dart';
 
 class NewsCubit extends Cubit<NewsState> {
-  final NewsRepository repository;
+  final GetArticles getArticles;
 
-  NewsCubit(this.repository) : super(NewsInitial());
+  NewsCubit(this.getArticles) : super(NewsInitial());
 
   Future<void> fetchArticles() async {
     emit(NewsLoading());
     try {
-      final articles = await repository.getArticles();
+      final articles = await getArticles();
       emit(NewsLoaded(articles));
     } catch (e) {
-      emit(NewsError("Gagal mengambil berita: $e"));
+      emit(NewsError('Gagal memuat berita: $e'));
     }
   }
 }

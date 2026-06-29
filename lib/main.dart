@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'core/di/injection.dart';
 import 'core/config/env_config.dart';
+import 'core/routing/app_router.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // Menjalankan Dependency Injection
-  setupLocator();
-  
+  await setupLocator();
   runApp(const DigiNewsApp());
 }
 
@@ -16,20 +14,24 @@ class DigiNewsApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: !EnvConfig.isProduction,
-      title: 'DigiNews',
+    final isProd = EnvConfig.isProduction;
+    return MaterialApp.router(
+      debugShowCheckedModeBanner: !isProd,
+      title: isProd ? 'UTD - 20123021' : 'DEV - M Rifky',
       theme: ThemeData(
-        brightness: Brightness.dark, // Wajib Dark Mode sesuai NIM Ganjil
         useMaterial3: true,
-        colorSchemeSeed: Colors.blue,
+        brightness: Brightness.dark,
+        colorScheme: isProd
+            ? ColorScheme.dark(
+                primary: const Color(0xFF0D47A1),
+                secondary: const Color(0xFF1565C0),
+              )
+            : ColorScheme.dark(
+                primary: Colors.blueAccent,
+                secondary: Colors.blue,
+              ),
       ),
-      home: Scaffold(
-        appBar: AppBar(title: const Text("DigiNews Home")),
-        body: const Center(
-          child: Text("Portal Berita Siap!"),
-        ),
-      ),
+      routerConfig: AppRouter.router,
     );
   }
 }
