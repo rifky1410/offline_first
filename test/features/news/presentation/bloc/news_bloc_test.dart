@@ -32,26 +32,28 @@ void main() {
     ];
     when(() => mockRepo.getArticles()).thenAnswer((_) async => articles);
 
-    final states = <NewsState>[];
-    cubit.stream.listen(states.add);
+    final expectation = expectLater(
+      cubit.stream,
+      emitsInOrder([isA<NewsLoading>(), isA<NewsLoaded>()]),
+    );
 
     await cubit.fetchArticles();
+    await expectation;
 
-    expect(states[0], isA<NewsLoading>());
-    expect(states[1], isA<NewsLoaded>());
-    expect((states[1] as NewsLoaded).articles.length, 2);
+    expect((cubit.state as NewsLoaded).articles.length, 2);
   });
 
   test('emit [NewsLoading, NewsError] ketika fetchArticles gagal', () async {
     when(() => mockRepo.getArticles()).thenThrow(Exception('Gagal'));
 
-    final states = <NewsState>[];
-    cubit.stream.listen(states.add);
+    final expectation = expectLater(
+      cubit.stream,
+      emitsInOrder([isA<NewsLoading>(), isA<NewsError>()]),
+    );
 
     await cubit.fetchArticles();
+    await expectation;
 
-    expect(states[0], isA<NewsLoading>());
-    expect(states[1], isA<NewsError>());
-    expect((states[1] as NewsError).message, contains('Gagal'));
+    expect((cubit.state as NewsError).message, contains('Gagal'));
   });
 }
