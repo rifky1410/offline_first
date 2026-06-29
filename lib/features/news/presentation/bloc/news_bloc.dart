@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../domain/repositories/news_repository.dart';
+import '../../domain/repositories/news_repository.dart';
 import 'news_state.dart';
 
 class NewsCubit extends Cubit<NewsState> {
