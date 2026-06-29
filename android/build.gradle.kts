@@ -14,21 +14,19 @@ rootProject.layout.buildDirectory.value(newBuildDir)
 subprojects {
     val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
     project.layout.buildDirectory.value(newSubprojectBuildDir)
-}
-subprojects {
-    project.evaluationDependsOn(":app")
-    pluginManager.withPlugin("com.android.library") {
-        extensions.findByType(com.android.build.gradle.LibraryExtension::class.java)?.apply {
-            if (namespace == null) {
-                namespace = group.toString()
+    afterEvaluate {
+        if (plugins.hasPlugin("com.android.library")) {
+            extensions.findByType(com.android.build.gradle.LibraryExtension::class.java)?.apply {
+                if (namespace == null) {
+                    namespace = group.toString()
+                }
+                if ((compileSdk ?: 0) < 35) {
+                    compileSdk = 35
+                }
             }
         }
     }
-    tasks.configureEach {
-        if (name.contains("AarMetadata", ignoreCase = true)) {
-            enabled = false
-        }
-    }
+    project.evaluationDependsOn(":app")
 }
 
 tasks.register<Delete>("clean") {
