@@ -14,9 +14,9 @@ class NewsPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => locator<NewsCubit>()..fetchArticles(),
       child: Scaffold(
-        backgroundColor: const Color(0xFF121212), // Background Dark Mode
+        backgroundColor: const Color(0xFF121212), // Syarat Dark Mode
         appBar: AppBar(
-          // Logika Anti-AI: Nama dan Warna sesuai Environment
+          // Logika Anti-AI: Nama sesuai versi Dev/Prod
           title: Text(
             EnvConfig.isProduction ? "UTD - 20123021" : "DEV - Rifky",
             style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
