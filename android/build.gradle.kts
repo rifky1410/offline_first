@@ -17,15 +17,10 @@ subprojects {
 }
 subprojects {
     project.evaluationDependsOn(":app")
-}
-
-subprojects {
-    afterEvaluate {
-        if (plugins.hasPlugin("com.android.library")) {
-            extensions.findByType(com.android.build.gradle.LibraryExtension::class.java)?.apply {
-                if (namespace == null) {
-                    namespace = group.toString()
-                }
+    pluginManager.withPlugin("com.android.library") {
+        extensions.findByType(com.android.build.gradle.LibraryExtension::class.java)?.apply {
+            if (namespace == null) {
+                namespace = group.toString()
             }
         }
     }
