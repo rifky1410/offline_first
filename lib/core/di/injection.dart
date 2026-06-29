@@ -2,7 +2,7 @@ import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import '../config/env_config.dart';
 import '../../features/news/data/repositories/news_repository_impl.dart';
-import '../../domain/repositories/news_repository.dart';
+import '../../features/news/domain/repositories/news_repository.dart';
 
 final locator = GetIt.instance;
 
@@ -15,7 +15,6 @@ void setupLocator() {
   });
 
   // Register News Repository
-  // PERBAIKAN: Menambahkan 'remoteDataSource:' di bawah agar sesuai dengan konstruktor
   locator.registerLazySingleton<NewsRepository>(
     () => NewsRepositoryImpl(
       remoteDataSource: locator<Dio>(),
